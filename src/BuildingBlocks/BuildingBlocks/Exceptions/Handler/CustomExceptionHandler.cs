@@ -44,9 +44,10 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
 
         var problemDetails = new ProblemDetails
         {
-            Title = exception.Message,
-            Status = StatusCodes.Status500InternalServerError,
-            Detail = exception.StackTrace
+            Title = details.Title,
+            Detail = details.Detail,
+            Status = details.StatusCode,
+            Instance = context.Request.Path
         };
 
         problemDetails.Extensions.Add("traceId", context.TraceIdentifier);
