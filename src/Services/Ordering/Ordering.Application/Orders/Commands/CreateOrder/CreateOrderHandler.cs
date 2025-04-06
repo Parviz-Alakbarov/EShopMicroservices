@@ -1,7 +1,4 @@
-﻿using BuildingBlocks.CQRS;
-using Ordering.Application.Data;
-using Ordering.Application.Dtos;
-
+﻿using Ordering.Application.Dtos;
 
 namespace Ordering.Application.Orders.Commands.CreateOrder;
 
@@ -22,15 +19,15 @@ public class CreateOrderHandler(IApplicationDbContext dbContext) : ICommandHandl
 
         var newOrder = Order.Create(
             id:OrderId.Of(Guid.NewGuid()),
-            customerId:CustomerId.Of(Guid.NewGuid()),
-            orderName:OrderName.Of(orderDto.OrderName),
+            customerId: CustomerId.Of(orderDto.CustomerId),
+            orderName: OrderName.Of(orderDto.OrderName),
             shippingAddress:shippingAddress,
             billingAddress:billingAddress,
             payment:Payment.Of(orderDto.Payment.CardName,orderDto.Payment.CardNumber,orderDto.Payment.Expiration,orderDto.Payment.Cvv,orderDto.Payment.PaymentMethod)
             );
         foreach (var orderItem in orderDto.OrderItems)
         {
-            newOrder.Add(ProductId.Of(Guid.NewGuid()), orderItem.Quantity, orderItem.Price);
+            newOrder.Add(ProductId.Of(orderItem.ProductId), orderItem.Quantity, orderItem.Price);
         }
         return newOrder;
     }

@@ -3,15 +3,18 @@ public class UpdateOrderHandler(IApplicationDbContext dbContext) : ICommandHandl
 {
     public async Task<UpdateOrderResult> Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
     {
-        OrderId orderId = OrderId.Of(command.OrderDto.Id);
-        var order = await dbContext.Orders.FindAsync([orderId], cancellationToken);
+        OrderId orderId = OrderId.Of(command.Order.Id);
+        var order = await dbContext.Orders
+            .Include(o => o.OrderItems) // We include OrderItems
+            .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+
 
         if (order == null)
         {
-            throw new OrderNotFoundException(command.OrderDto.Id);
+            throw new OrderNotFoundException(command.Order.Id);
         }
 
-        UpdateOrderWithNewValues(order, command.OrderDto);
+        UpdateOrderWithNewValues(order, command.Order);
 
         dbContext.Orders.Update(order);
         await dbContext.SaveChangesAsync(cancellationToken);

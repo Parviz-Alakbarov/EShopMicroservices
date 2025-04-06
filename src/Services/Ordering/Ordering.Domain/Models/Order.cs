@@ -2,7 +2,6 @@
 
 public class Order : Aggregate<OrderId>
 {
-
     internal Order()
     {
 
@@ -61,6 +60,18 @@ public class Order : Aggregate<OrderId>
         var orderItem = new OrderItem(Id, productId, quantity, price);
         _orderItems.Add(orderItem);
     }
+
+    //public void Update(ProductId productId, int quantity, decimal price)
+    //{
+    //    ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
+    //    ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+    //    var orderItem = _orderItems.FirstOrDefault(x => x.ProductId == productId);
+    //    if (orderItem is null)
+    //    {
+    //        throw new ArgumentNullException(nameof(orderItem));
+    //    }
+    //    orderItem.Price = price;
+    //}
 
     public void Remove(ProductId productId)
     {
