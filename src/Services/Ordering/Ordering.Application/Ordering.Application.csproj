@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="Orders\EventHandlers\" />
     <Folder Include="Orders\Queries\" />
   </ItemGroup>
 
