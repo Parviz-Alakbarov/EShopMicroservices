@@ -19,7 +19,7 @@ public class StoreBasketCommandHandler
     public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
         await DeductDiscount(command.Cart, cancellationToken);
-        await basketRepository.StoreBasket(command.Cart);
+        await basketRepository.StoreBasket(command.Cart, cancellationToken);
         return new StoreBasketResult(command.Cart.UserName);
     }
 
